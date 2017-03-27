@@ -1,16 +1,13 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: Jumia Food App
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
 basePath: /
-# 
 schemes:
-  # tip: remove http to make production-grade
   - http
-  - https
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
@@ -18,40 +15,144 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
+  /restaurants:
     # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+    x-swagger-router-controller: restaurantsummary
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns 'an array of restaurant summary object' to the caller
       # used as the method name of the controller
-      operationId: hello
+      operationId: restaurant summary
       parameters:
-        - name: name
+        - name: city
           in: query
-          description: The name of the person to whom to say hello
-          required: false
+          description: The city of delivery
+          required: true
+          type: string
+        - name: area
+          in: query
+          description: The area of delivery
+          required: true
           type: string
       responses:
         "200":
-          description: Success
+          description: an array of restaurant summary
           schema:
+            type: array
+            items: 
+              $ref: '#/definitions/RestaurantSummary'
             # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
+                  # responses may fall through to errors
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /retaurant/{id}:
+     # binds a127 app logic to a route
+    get:
+      description: Returns 'an array of restaurant object based on a single id' to the caller
+      # used as the method name of the controller
+      operationId: find restaurant by id
+      parameters:
+        - name: id
+          in: path
+          description: The city of delivery
+          required: true
+          type: integer
+          format: int64
+        - name: area
+          in: query
+          description: The area of delivery
+          required: true
+          type: string
+      responses:
+        "200":
+          description: an array of restaurant
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/RestaurantSummary'
+            # a pointer to a definition
+                  # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
+  RestaurantSummary:
+    type: object
     properties:
-      message:
+      restaurant_id:
         type: string
+        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
+      restaurant_name:
+        type: string
+        description: Display name of a restaurant.
+      meal_search_keywords:
+        type: string
+        description: Display the top meal category keywords available.
+      estimated_delivery_time:
+        type: string
+        description: expected time of delivery of product
+      cost_rating:
+        type: string
+        description: pound symbols showing cost ratings of restaurants
+      image:
+        type: string
+        description: Image URL representing the restaurant logo.
+      rating: 
+        $ref: '#/definitions/Rating'
+  Rating:
+    type: object
+    properties:
+      best_rating:
+        type: string
+        description: the best rating possible
+      rating_value:
+        type: string
+        description: average rating possible
+      worst_rating:
+        type: string
+        description: the worst rating possible
+  Restaurant:
+    type: object
+    properties:
+      title:
+        type: array
+        description: a title of the food menu available
+      deliveryfee:
+        type: string
+        description: the price of delivery
+      eligibletransactionvolume:
+        type: string
+        description: The minimum order in currency that can be processed at delivery price
+      pricecurrency:
+        type: string
+        description: the currency being applied
+      restaurantsummary:
+        $ref: '#/definitions/RestaurantSummary'
+       MenuItem:
+    type: object
+    properties:
+      title:
+        type: string
+        description: this is the title of the meal
+      meal_description:
+        type: string
+        description: a description of the meal
+      price: 
+        type: string
+        description: price of meal
+      eligibletransactionvolume:
+        type: string
+        description: the minimum order in currency that can be processed at delivery price
+      image:
+        type: string
+        description: Image URL representing the meal
+      
   ErrorResponse:
     required:
       - message
