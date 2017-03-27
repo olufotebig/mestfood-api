@@ -67,10 +67,8 @@ paths:
       responses:
         "200":
           description: an array of restaurant
-          schema:
-            type: array
-            items: 
-              $ref: '#/definitions/RestaurantSummary'
+          schema: 
+            $ref: '#/definitions/Restaurant'
             # a pointer to a definition
                   # responses may fall through to errors
         default:
@@ -132,8 +130,14 @@ definitions:
       pricecurrency:
         type: string
         description: the currency being applied
+      menuitems:
+        type: array
+        items: 
+          $ref: '#/definitions/MenuItem'
       restaurantsummary:
         $ref: '#/definitions/RestaurantSummary'
+        
+        
   MenuItem:
     type: object
     properties:
