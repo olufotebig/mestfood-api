@@ -121,7 +121,7 @@ definitions:
     type: object
     properties:
       title:
-        type: array
+        type: string
         description: a title of the food menu available
       deliveryfee:
         type: string
@@ -134,7 +134,7 @@ definitions:
         description: the currency being applied
       restaurantsummary:
         $ref: '#/definitions/RestaurantSummary'
-       MenuItem:
+  MenuItem:
     type: object
     properties:
       title:
