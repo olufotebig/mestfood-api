@@ -155,7 +155,7 @@ definitions:
         description: the minimum order in currency that can be processed at delivery price
       image:
         type: string
-        description: Image URL representing the meal
+        description: Image URL representing the meat
       
   ErrorResponse:
     required:
